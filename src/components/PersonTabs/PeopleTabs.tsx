@@ -7,17 +7,15 @@ import { PersonLink } from '../PersonLink';
 import { useParams } from 'react-router-dom';
 
 export const PeopleTabs = () => {
-  const [peoples, setPeoples] = useState<Person[]>([]);
-  // const [selectedPersonSlug, setSelectedPersonSlug] = useState<string | null>(
-  //   null,
-  // );
+  const [people, setPeople] = useState<Person[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const { slug } = useParams<{ slug: string }>();
 
   useEffect(() => {
     getPeople()
-      .then(setPeoples)
+      .then(setPeople)
       .catch(() => setHasError(true))
       .finally(() => setIsLoading(false));
   }, []);
@@ -31,7 +29,7 @@ export const PeopleTabs = () => {
       return undefined;
     }
 
-    return peoples.find(person => person.name === name);
+    return people.find(person => person.name === name);
   };
 
   if (isLoading) {
@@ -46,7 +44,7 @@ export const PeopleTabs = () => {
     );
   }
 
-  if (peoples.length === 0) {
+  if (people.length === 0) {
     return <p data-cy="noPeopleMessage">There are no people on the server</p>;
   }
 
@@ -68,14 +66,13 @@ export const PeopleTabs = () => {
         </thead>
 
         <tbody>
-          {peoples.map(person => (
+          {people.map(person => (
             <tr
               data-cy="person"
               key={person.slug}
               // onClick={() => handleRowClick(person.slug)}
               className={classNames({
-                // 'has-background-warning':
-                // selectedPersonSlug === person.slug,
+                // 'has-background-warning': selectedPersonSlug === person.slug,
                 'has-background-warning': slug === person.slug,
               })}
             >
